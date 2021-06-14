@@ -1,6 +1,7 @@
 package numbers;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
@@ -78,7 +79,7 @@ public class Main {
     }
 
     public static boolean isItSunny(long number) {
-        return isItSquare(number+1);
+        return isItSquare(number + 1);
     }
 
     public static void showMenu() {
@@ -198,9 +199,83 @@ public class Main {
             }
         } else {
             System.out.printf("The property [%s] is wrong.%n" +
-                    "Available properties: [EVEN, ODD, BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY]%n", prop);
+                    "Available properties: [EVEN, ODD, BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY]%n", prop);
         }
     }
+
+    public static void NumberWithMultiProperties(long number1, long number2, String prop1, String prop2) {
+
+
+        String property1 = prop1.toLowerCase();
+        String property2 = prop2.toLowerCase();
+        boolean property1Check = property1.equals("even") || property1.equals("odd") ||
+                property1.equals("buzz") || property1.equals("duck") ||
+                property1.equals("palindromic") || property1.equals("gapful") ||
+                property1.equals("spy") || property1.equals("square")
+                || property1.equals("sunny");
+        boolean property2Check = property2.equals("even") || property2.equals("odd") ||  //проверяем второе свойство
+                property2.equals("buzz") || property2.equals("duck") ||
+                property2.equals("palindromic") || property2.equals("gapful") ||
+                property2.equals("spy") || property2.equals("square")
+                || property2.equals("sunny");
+
+        if ((property1Check) && (property2Check)) {
+
+            if (property1.equals("odd") && property2.equals("even") ||
+                    property1.equals("even") && property2.equals("odd")) {
+                System.out.printf("The request contains mutually exclusive properties:[%s,%s]%n" +
+                        "Available properties: [EVEN, ODD, BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY]%n", prop1, prop2);
+            } else if (property1.equals("square") && property2.equals("sunny") ||
+                    property1.equals("sunny") && property2.equals("square")) {
+                System.out.printf("The request contains mutually exclusive properties:[%s,%s]%n" +
+                        "Available properties: [EVEN, ODD, BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY]%n", prop1, prop2);
+            } else if (property1.equals("spy") && property2.equals("duck") ||
+                    property1.equals("duck") && property2.equals("spy")) {
+                System.out.printf("The request contains mutually exclusive properties:[%s,%s]%n" +
+                        "Available properties: [EVEN, ODD, BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY]%n", prop1, prop2);
+            } else {
+
+                while (number2 > 0) {
+                    for (int i = 0; ; i++) {
+                        buzz = isItBuzz(number1 + i);
+                        even = isItEven(number1 + i);
+                        odd = !even;
+                        duck = isItDuck(number1 + i);
+                        palindromic = isItPalindromic(number1 + i);
+                        gapful = isItGapful(number1 + i);
+                        spy = isItSpy(number1 + i);
+                        square = isItSquare(number1 + i);
+                        sunny = isItSunny(number1 + i);
+                        String lookForProp = showResult(number1 + i, even, odd, buzz, duck, palindromic, gapful, spy, square, sunny, true);
+                        if (lookForProp.contains(property1) && lookForProp.contains(property2)) {
+                            System.out.print(lookForProp);
+                            number2--;
+                        }
+                        if (number2 == 0) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+    } else if(!property1Check &&property2Check)
+
+    {
+        System.out.printf("The property [%s] is wrong.%n" +
+                "Available properties: [EVEN, ODD, BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY]%n", prop1);
+    } else if(property1Check &&!property2Check)
+
+    {
+        System.out.printf("The property [%s] is wrong.%n" +
+                "Available properties: [EVEN, ODD, BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY]%n", prop2);
+    } else if(!property1Check &&!property2Check)
+
+    {
+        System.out.printf("The properties [%s,%s] are wrong.%n" +
+                "Available properties: [EVEN, ODD, BUZZ, DUCK, PALINDROMIC, GAPFUL, SPY, SQUARE, SUNNY]%n", prop1, prop2);
+    }
+
+}
 
     public static void InputHandler() {
         do {
@@ -218,6 +293,8 @@ public class Main {
             } else if (inputs.length == 3) {
                 NumberWithProperty(Long.parseLong(inputs[0]), Long.parseLong(inputs[1]), inputs[2]);
                 System.out.println();
+            } else if (inputs.length == 4) {
+                NumberWithMultiProperties(Long.parseLong(inputs[0]), Long.parseLong(inputs[1]), inputs[2], inputs[3]);
             }
 
         } while (!exit);
