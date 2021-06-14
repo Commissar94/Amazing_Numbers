@@ -13,6 +13,8 @@ public class Main {
     static boolean palindromic;
     static boolean gapful;
     static boolean spy;
+    static boolean square;
+    static boolean sunny;
     static boolean exit = false;
 
     public static boolean isItBuzz(long number) {
@@ -69,6 +71,16 @@ public class Main {
         return sum == multiplication;
     }
 
+    public static boolean isItSquare(long number) {
+        double sqrt = Math.sqrt(number);
+        sqrt = Math.round(sqrt);
+        return sqrt * sqrt == number;
+    }
+
+    public static boolean isItSunny(long number) {
+        return isItSquare(number+1);
+    }
+
     public static void showMenu() {
         System.out.printf("Welcome to Amazing Numbers!%n%n" +
                 "Supported requests: %n" +
@@ -77,20 +89,23 @@ public class Main {
                 "  * the first parameter represents a starting number; %n" +
                 "  * the second parameters show how many consecutive numbers are to be processed; %n" +
                 "- two natural numbers and a property to search for; %n" +
+                "- two natural numbers and two properties to search for; %n" +
                 "- separate the parameters with one space; %n" +
                 "- enter 0 to exit.%n%n");
     }
 
-    public static String showResult(long number, boolean even, boolean odd, boolean buzz, boolean duck, boolean palindromic, boolean gapful, boolean spy, boolean multi) {
+    public static String showResult(long number, boolean even, boolean odd, boolean buzz, boolean duck, boolean palindromic, boolean gapful, boolean spy, boolean square, boolean sunny, boolean multi) {
 
         if (multi) {
-            return String.format("%d is %s%s%s%s%s%s%s%n", number, even ? "even" : "",
+            return String.format("%d is %s%s%s%s%s%s%s%s%s%n", number, even ? "even" : "",
                     odd ? "odd" : "",
                     buzz ? ", buzz" : "",
                     duck ? ", duck" : "",
                     palindromic ? ", palindromic" : "",
                     gapful ? ", gapful" : "",
-                    spy ? ", spy" : "");
+                    spy ? ", spy" : "",
+                    square ? ", square" : "",
+                    sunny ? ", sunny" : "");
 
 
         } else {
@@ -101,7 +116,9 @@ public class Main {
                     "duck: %b%n" +
                     "palindromic: %b%n" +
                     "gapful: %b%n" +
-                    "spy: %b%n%n", number, even, odd, buzz, duck, palindromic, gapful, spy);
+                    "spy: %b%n" +
+                    "square: %b%n" +
+                    "sunny: %b%n%n", number, even, odd, buzz, duck, palindromic, gapful, spy, square, sunny);
         }
 
     }
@@ -119,8 +136,10 @@ public class Main {
             palindromic = isItPalindromic(number);
             gapful = isItGapful(number);
             spy = isItSpy(number);
+            square = isItSquare(number);
+            sunny = isItSunny(number);
 
-            System.out.print(showResult(number, even, odd, buzz, duck, palindromic, gapful, spy, false));
+            System.out.print(showResult(number, even, odd, buzz, duck, palindromic, gapful, spy, square, sunny, false));
         }
     }
 
@@ -141,7 +160,9 @@ public class Main {
                 palindromic = isItPalindromic(number1 + i);
                 gapful = isItGapful(number1 + i);
                 spy = isItSpy(number1 + i);
-                System.out.print(showResult(number1 + i, even, odd, buzz, duck, palindromic, gapful, spy, true));
+                square = isItSquare(number1 + i);
+                sunny = isItSunny(number1 + i);
+                System.out.print(showResult(number1 + i, even, odd, buzz, duck, palindromic, gapful, spy, square, sunny, true));
             }
         }
     }
@@ -152,7 +173,8 @@ public class Main {
         if (property.equals("even") || property.equals("odd") ||
                 property.equals("buzz") || property.equals("duck") ||
                 property.equals("palindromic") || property.equals("gapful") ||
-                property.equals("spy")) {
+                property.equals("spy") || property.equals("square")
+                || property.equals("sunny")) {
             while (number2 > 0) {
                 for (int i = 0; ; i++) {
                     buzz = isItBuzz(number1 + i);
@@ -162,7 +184,9 @@ public class Main {
                     palindromic = isItPalindromic(number1 + i);
                     gapful = isItGapful(number1 + i);
                     spy = isItSpy(number1 + i);
-                    String lookForProp = showResult(number1 + i, even, odd, buzz, duck, palindromic, gapful, spy, true);
+                    square = isItSquare(number1 + i);
+                    sunny = isItSunny(number1 + i);
+                    String lookForProp = showResult(number1 + i, even, odd, buzz, duck, palindromic, gapful, spy, square, sunny, true);
                     if (lookForProp.contains(property)) {
                         System.out.print(lookForProp);
                         number2--;
